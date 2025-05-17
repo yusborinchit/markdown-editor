@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { notes } from "~/server/db/schema";
 import { api } from "~/trpc/react";
+import { Button } from "../ui/button";
 
 interface Props {
   note: typeof notes.$inferSelect;
@@ -18,16 +19,16 @@ export default function NoteCard({ note }: Readonly<Props>) {
 
   return (
     <div className="relative flex flex-col gap-2">
-      <button
+      <Button
         type="button"
         onClick={() => deleteNote.mutate({ id: note.id })}
         disabled={deleteNote.isPending}
-        className="absolute top-4 right-4 rounded-md bg-black px-3 py-1.5 font-semibold text-sm text-white tracking-tight hover:cursor-pointer disabled:opacity-50"
+        className="absolute top-4 right-4"
       >
         {deleteNote.isPending ? "Loading..." : "Delete"}
-      </button>
+      </Button>
       <Link href={`/notes/${note.id}`}>
-        <pre>
+        <pre className="text-neutral-400">
           {JSON.stringify(
             {
               id: note.id,

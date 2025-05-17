@@ -1,10 +1,12 @@
 "use client";
 
+import { Eye, SquarePen } from "lucide-react";
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import TextareaAutosize from "react-textarea-autosize";
 import { useDebounce } from "use-debounce";
 import { api } from "~/trpc/react";
+import { Button } from "./ui/button";
 
 interface Props {
   id: string;
@@ -40,9 +42,9 @@ export default function NoteEditor({ id }: Readonly<Props>) {
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex items-center justify-between">
         {isSaving ? (
-          <p>Saving...</p>
+          <p className="text-muted">Saving...</p>
         ) : (
-          <p>
+          <p className="text-muted">
             Last saved:{" "}
             {note.updatedAt?.toLocaleTimeString("es", {
               hour: "2-digit",
@@ -50,24 +52,30 @@ export default function NoteEditor({ id }: Readonly<Props>) {
             })}
           </p>
         )}
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon"
           onClick={() => setIsPreview((p) => !p)}
-          className="rounded-md bg-black px-3 py-1.5 font-semibold text-sm text-white tracking-tight hover:cursor-pointer disabled:opacity-50"
         >
-          {isPreview ? "Edit" : "Preview"}
-        </button>
+          {isPreview ? (
+            <SquarePen aria-label="Edit" className="size-5 shrink-0" />
+          ) : (
+            <Eye aria-label="Preview" className="size-5 shrink-0" />
+          )}
+        </Button>
       </div>
       {isPreview ? (
-        <div className="prose prose-sm sm:prose-base prose-neutral">
+        <div className="prose prose-invert prose-sm sm:prose-base prose-neutral prose-pre:bg-neutral-950/50 prose-li:text-neutral-400 prose-p:text-neutral-400 prose-pre:text-neutral-50 prose-strong:text-neutral-400">
           <Markdown>{content}</Markdown>
         </div>
       ) : (
         <TextareaAutosize
           onChange={(e) => setContent(e.target.value)}
-          minRows={12}
+          minRows={6}
           value={content}
-          className="resize-none rounded-md border font-mono"
+          placeholder="Write your markdown here..."
+          className="rounded-md border border-input bg-transparent px-3 py-2 font-mono text-base placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
         />
       )}
     </div>

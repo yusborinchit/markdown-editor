@@ -5,7 +5,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default async function ProtectedWrapper({ children }: Readonly<Props>) {
+export default async function AuthContainer({ children }: Readonly<Props>) {
   const session = await auth();
 
   if (!session?.user) redirect("/sign-in");

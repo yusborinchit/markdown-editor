@@ -2,6 +2,7 @@
 
 import { api } from "~/trpc/react";
 import NoteCard from "./cards/note-card";
+import { Button } from "./ui/button";
 
 export default function NotesList() {
   const [notes] = api.note.getAll.useSuspenseQuery();
@@ -21,13 +22,13 @@ export default function NotesList() {
           createNote.mutate();
         }}
       >
-        <button
+        <Button
           type="submit"
           disabled={createNote.isPending}
-          className="rounded-md px-4 py-2.5 font-semibold tracking-tight hover:cursor-pointer disabled:opacity-50 "
+          className="w-full"
         >
           {createNote.isPending ? "Loading..." : "New Note"}
-        </button>
+        </Button>
       </form>
       {notes.map((note) => (
         <NoteCard key={note.id} note={note} />

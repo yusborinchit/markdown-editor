@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 export default function SignInButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,17 +10,13 @@ export default function SignInButton() {
   function handleSignIn() {
     setIsLoading(true);
     signIn("github", {
-      redirectTo: "/",
+      redirectTo: "/auth",
     });
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleSignIn}
-      className="rounded-md px-4 py-2.5 font-semibold tracking-tight hover:cursor-pointer"
-    >
+    <Button type="button" onClick={handleSignIn}>
       {isLoading ? "Loading..." : "Sign in with GitHub"}
-    </button>
+    </Button>
   );
 }
